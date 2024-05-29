@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>User Maps</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            box-sizing: border-box;
+        }
+
+        /*#navbar-placeholder {
+            height: 20px;
+        }*/
+
+        #content {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            margin-top: 80px;
+            height: calc(100vh - 60px);
+            box-sizing: border-box;
+        }
+
+        #text-container {
+            flex: 0 0 30%;
+            padding: 20px;
+            background-image: url('user_maps_bg.jpg');
+            background-size: cover;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            border-radius: 25px;
+            overflow-y: auto;
+        }
+
+        .box {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .box h3 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            color: #1565c0;
+        }
+
+        .box p {
+            margin: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        #tablet-table {
+            width: 100%;
+            border-collapse: collapse;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        #tablet-table th,
+        #tablet-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #tablet-table th {
+            background-color: #bbdefb;
+            color: #333;
+        }
+
+        #tablet-table td {
+            background-color: #ffffff;
+        }
+
+        #tablet-table tr:hover td {
+            background-color: #e3f2fd;
+        }
+
+        #map-container {
+            flex: 1;
+            margin-left: 20px;
+            border: 2px solid #bbdefb;
+            border-radius: 25px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 25px;
+        }
+
+        /* Button Styles */
+        #proceed-button {
+            background-color: #2196F3;
+            border-color: #333;
+            color: white;
+            padding: 10px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px;
+            margin-top: 20px;
+            margin-left: 110px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+            outline: none;
+        }
+
+        #proceed-button:hover {
+            background-color: #0b7dda;
+        }
+
+        #proceed-button:active {
+            background-color: #095c9f;
+        }
+
+        /* Confirmation message styles */
+        #confirmation-message {
+            display: none;
+            font-size: 25px;
+            color: #296cb4;
+            margin-top: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-placeholder">Navbar</div>
+
+    <div id="content">
+        <div id="text-container" class="animate__animated animate__bounceIn">
+            <div class="box" id="username-box">
+                <h3>Username</h3>
+                <p id="username">John Doe</p>
+            </div>
+            <div class="box" id="tablet-type-count-box">
+                <h3>Tablet Type Count</h3>
+                <p id="tablet-type-count">3</p><br />
+                <div id="tablets-container">
+                    <table id="tablet-table">
+                        <thead>
+                            <tr>
+                                <th>Tablet Name</th>
+                                <th>Tablet Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Tablet Name 1</td>
+                                <td>Count 1</td>
+                            </tr>
+                            <tr>
+                                <td>Tablet Name 2</td>
+                                <td>Count 2</td>
+                            </tr>
+                            <tr>
+                                <td>Tablet Name 3</td>
+                                <td>Count 3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button id="proceed-button" class="animate__animated animate__bounceIn">Proceed</button>
+            <div id="confirmation-message" class="animate__animated animate__pulse">Select a pharmacy store</div>
+        </div>
+
+        <div id="map-container" class="animate__animated animate__bounceIn">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- leaflet js  -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Bootstrap JS and its dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzOg+aG7A1T9EFr1DgWp3yFqncKZ8V+L5qpPcJl7o3gm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-q/QDYob/oRmWPUKTXGHoBo6QaXAoFmbVuoy7ThKe4C1BIyH1ym0EN6G3dWl0UibJ" crossorigin="anonymous"></script>
+
+    <script>
+        // Function to get address from latitude and longitude using Nominatim API
+        function getAddress(lat, lon, callback) {
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`)
+                .then(response => response.json())
+                .then(data => {
+                    const address = data.display_name;
+                    callback(address);
+                })
+                .catch(error => console.error('Error fetching address:', error));
+        }
+
+        // Map initialization
+        var map = L.map("map").setView([14.0860746, 100.608406], 6);
+
+        // OSM layer
+        var osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        });
+        osm.addTo(map);
+
+        // Locations
+        var locations = [
+            { lat: 13.7563, long: 100.5018 },
+            { lat: 18.7883, long: 98.9853 },
+            { lat: 13.0827, long: 80.2707 },
+            { lat: 17.3850, long: 78.4867 },
+            { lat: 15.8700, long: 100.9925 },
+            { lat: 16.8713, long: 96.1994 },
+            { lat: 16.8409, long: 96.1735 },
+            { lat: 16.9236, long: 100.8825 },
+        ];
+
+        // Add markers
+        function addMarkers() {
+            locations.forEach(function (location) {
+                var marker = L.marker([location.lat, location.long]);
+                getAddress(location.lat, location.long, function (address) {
+                    marker.bindPopup(address);
+
+                    marker.on('click', function () {
+                        window.location.href = `user_details.html?address=${encodeURIComponent(address)}`;
+                    });
+                });
+                marker.addTo(map);
+            });
+        }
+
+        addMarkers();
+
+        var marker, circle;
+
+        // Get user position
+        function getPosition(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var accuracy = position.coords.accuracy;
+
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            if (circle) {
+                map.removeLayer(circle);
+            }
+
+            marker = L.marker([lat, long]);
+            circle = L.circle([lat, long], { radius: accuracy });
+
+            var featureGroup = L.featureGroup([marker, circle]).addTo(map);
+            map.fitBounds(featureGroup.getBounds());
+
+            getAddress(lat, long, function (address) {
+                marker.bindPopup("You are here! " + address).openPopup();
+
+                marker.on('click', function () {
+                    window.location.href = `user_details.html?address=${encodeURIComponent(address)}`;
+                });
+            });
+
+            console.log(
+                "Your coordinate is: Lat: " +
+                lat +
+                " Long: " +
+                long +
+                " Accuracy: " +
+                accuracy
+            );
+        }
+
+        if (!navigator.geolocation) {
+            console.log("Your browser doesn't support geolocation feature!");
+        } else {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                getPosition(position);
+                navigator.geolocation.watchPosition(
+                    getPosition,
+                    function (error) {
+                        console.error(error);
+                    },
+                    { enableHighAccuracy: true }
+                );
+            });
+        }
+
+        // Load navbar
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(htmlContent => {
+                    navbarPlaceholder.innerHTML = htmlContent;
+
+                    // Re-initialize Bootstrap JS components after loading navbar
+                    var script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js";
+                    script.integrity = "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz";
+                    script.crossOrigin = "anonymous";
+                    document.body.appendChild(script);
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                });
+        });
+
+        // Proceed button functionality
+        document.getElementById('proceed-button').addEventListener('click', function() {
+            this.style.display = 'none';
+            document.getElementById('confirmation-message').style.display = 'block';
+        });
+    </script>
+</body>
+
+</html>

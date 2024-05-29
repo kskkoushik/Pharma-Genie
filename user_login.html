@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>User Login</title>
+    <link rel="stylesheet" href="user_login_styles.css">
+    <script src="https://kit.fontawesome.com/211a202798.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- Placeholder for the navbar content -->
+  <div id="navbar-placeholder"></div>
+
+    <div class="container" style="padding-top: 55px;">
+        <div class="form_box">
+            <h1 id="title">Sign Up</h1>
+            <form id="registrationForm" onsubmit="return validateForm()">
+                <div class="input_group">
+                    <div class="input_field" id="namefield">
+                        <i class="fa-regular fa-user"></i>
+                        <label for="firstName"></label>
+                        <input type="text" id="firstName" placeholder="Full Name" name="firstName">
+                    </div>
+                    <!--<div class="input_field" id="lastnamefield">
+                        <i class="fa-regular fa-user"></i>
+                        <label for="lastName"></label>
+                        <input type="text" id="lastName" placeholder="Last Name" name="lastName">
+                    </div>-->
+                    <div class="input_field" id="emailfield">
+                        <i class="fa-regular fa-envelope"></i>
+                        <label for="email"></label>
+                        <input type="email" id="email" placeholder="Email" name="email">
+                    </div>
+                    <div class="input_field">
+                        <i class="fa-regular fa-user"></i>
+                        <label for="username"></label>
+                        <input type="text" id="username" placeholder="Username" name="username">
+                    </div>
+                    <div class="input_field">
+                        <i class="fa-solid fa-lock"></i>
+                        <label for="password"></label>
+                        <input type="password" id="password" placeholder="Password" name="password">
+                    </div>
+                    <div class="input_field" id="confirmPasswordField">
+                        <i class="fa-solid fa-lock"></i>
+                        <label for="confirmPassword"></label>
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" name="confirmPassword">
+                    </div>
+                </div>
+                <p class="error" id="password-error-message"></p>
+                <button type="submit" class="rounded-button"><a href="user_form.html" style="text-decoration: none; color: white;">Register</a></button>
+                <div class="btn_field">
+                    <button type="button" id="signupbtn">SignUp</button>
+                    <button type="button" class="disable" id="loginbtn">Log In</button>
+                </div>
+            </form>
+        </div>
+        <div class="image_container">
+            <img src="user_login_img.png" alt="Hospital Image">
+        </div>
+    </div>
+    <script>
+        var loginbtn = document.getElementById('loginbtn');
+        var signupbtn = document.getElementById('signupbtn');
+        var namefield = document.getElementById('namefield');
+        var emailfield = document.getElementById('emailfield');
+        var confirmPasswordField = document.getElementById('confirmPasswordField');
+        var title = document.getElementById('title');
+        var passwordErrorMessage = document.getElementById('password-error-message');
+
+        function validateForm() {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            passwordErrorMessage.innerHTML = '';
+
+            if (password !== confirmPassword) {
+                passwordErrorMessage.innerHTML = 'Passwords do not match';
+                return false;
+            }
+
+            return true;
+        }
+
+        loginbtn.onclick = function() {
+            namefield.style.maxHeight = "0";
+            emailfield.style.maxHeight = "0";
+            confirmPasswordField.style.maxHeight = "0";
+            title.innerHTML = "Log In";
+            signupbtn.classList.add("disable");
+            loginbtn.classList.remove("disable");
+        }
+
+        signupbtn.onclick = function() {
+            namefield.style.maxHeight = "95px";
+            emailfield.style.maxHeight = "65px";
+            confirmPasswordField.style.maxHeight = "65px";
+            title.innerHTML = "Sign Up";
+            signupbtn.classList.remove("disable");
+            loginbtn.classList.add("disable");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+        
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(htmlContent => {
+                    navbarPlaceholder.innerHTML = htmlContent;
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                });
+        });
+    </script>
+</body>
+</html>

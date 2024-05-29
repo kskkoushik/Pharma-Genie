@@ -1,0 +1,37 @@
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.background-image {
+    background-image: url('home_bg.jpg'); /* Path to your background image */
+    background-size: cover; /* Adjusts the background image to cover the entire element */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
+    background-position: center; /* Centers the background image */
+    height: 100vh; /* Sets the height of the element to the full height of the viewport */
+    display: flex; /* Enables flexbox layout */
+    flex-direction: row; /* Arranges children in a row */
+    justify-content: flex-start; /* Aligns content to the start of the flex container */
+    align-items: center; /* Centers content vertically */
+    color: white; /* Text color */
+    padding: 50px 0 50px 5px; /* Reduce the left padding to 10px */
+}
+
+.background-image .content {
+    display: flex;
+    align-items: left;
+}
+
+.background-image img {
+    margin-right: 0px; /* Space between image and text */
+    max-width: 700px; /* Adjust the size of the image */
+    height: 500px; /* Maintain the aspect ratio */
+    animation: bounce 2s infinite; /* Apply the bounce animation */
+}

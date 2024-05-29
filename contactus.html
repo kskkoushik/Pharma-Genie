@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(173, 216, 230, 0.8));
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .contact-form {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px; /* Increase the max-width of the form */
+            width: 100%;
+        }
+
+        .contact-form h2 {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form label {
+            margin-bottom: 10px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .contact-form button {
+            padding: 10px;
+            background-color: #00BFFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form button:hover {
+            background-color: #0099cc;
+        }
+
+        .contact-image {
+            display: none; /* Hide the image on small screens */
+            margin-left: 20px;
+        }
+
+        .contact-image img {
+            max-width: 600px; /* Increase the max-width of the image */
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .contact-container {
+                flex-direction: row;
+            }
+
+            .contact-image {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Placeholder for the navbar content -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="contact-container">
+        <div class="contact-form">
+        <link rel="stylesheet">
+            <h2>Contact us</h2>
+            <form>
+                <label for="name">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                </label>
+                <label for="email">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </label>
+                <label for="message">
+                    <textarea id="message" name="message" placeholder="Message" required></textarea>
+                </label>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="contact-image">
+            <img src="contactus_img.png" alt="Contact Illustration">
+        </div>
+    </div>
+    <script>
+        // Load navbar
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbarPlaceholder = document.getElementById('navbar-placeholder');
+
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(htmlContent => {
+                    navbarPlaceholder.innerHTML = htmlContent;
+
+                    // Re-initialize Bootstrap JS components after loading navbar
+                    var script = document.createElement('script');
+                    script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js";
+                    script.integrity = "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz";
+                    script.crossOrigin = "anonymous";
+                    document.body.appendChild(script);
+                })
+                .catch(error => {
+                    console.error('Error loading content:', error);
+                });
+        });
+    </script>
+</body>
+</html>
